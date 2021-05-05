@@ -5,9 +5,9 @@
 #  / ___ \| |  | | (_| |/ __/  |  __/| | | (_) |
 # /_/   \_\_|  |_|\__,_|_____| |_|   |_|  \___/
 #
-# https://github.com/P3TERX/docker-aria2-pro
+# https://github.com/P3TERX/Aria2-Pro-Docker
 #
-# Copyright (c) 2020 P3TERX <https://p3terx.com>
+# Copyright (c) 2020-2021 P3TERX <https://p3terx.com>
 #
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
@@ -45,6 +45,11 @@ sed -i "s@^\(dht-file-path6=\).*@\1${ARIA2_CONF_DIR}/dht6.dat@" ${ARIA2_CONF}
 [[ "${IPV6_MODE}" = "true" || "${IPV6_MODE}" = "enable" ]] && {
     sed -i "s@^\(disable-ipv6=\).*@\1false@" ${ARIA2_CONF}
     sed -i "s@^\(enable-dht6=\).*@\1true@" ${ARIA2_CONF}
+}
+
+[[ "${IPV6_MODE}" = "false" || "${IPV6_MODE}" = "disable" ]] && {
+    sed -i "s@^\(disable-ipv6=\).*@\1true@" ${ARIA2_CONF}
+    sed -i "s@^\(enable-dht6=\).*@\1false@" ${ARIA2_CONF}
 }
 
 [[ "${SPECIAL_MODE}" = "rclone" ]] &&

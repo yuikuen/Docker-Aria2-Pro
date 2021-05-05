@@ -5,9 +5,9 @@
 #  / ___ \| |  | | (_| |/ __/  |  __/| | | (_) |
 # /_/   \_\_|  |_|\__,_|_____| |_|   |_|  \___/
 #
-# https://github.com/P3TERX/docker-aria2-pro
+# https://github.com/P3TERX/Aria2-Pro-Docker
 #
-# Copyright (c) 2020 P3TERX <https://p3terx.com>
+# Copyright (c) 2020-2021 P3TERX <https://p3terx.com>
 #
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
@@ -17,9 +17,9 @@
 mkdir -p ${ARIA2_CONF_DIR} ${SCRIPT_DIR} ${DOWNLOAD_DIR}
 
 PROFILES="
-core
 aria2.conf
 script.conf
+core
 delete.sh
 dht.dat
 dht6.dat
@@ -35,11 +35,11 @@ DOWNLOAD_PROFILE
 
 if ! [[ "${UPDATE_TRACKERS}" = "false" || "${UPDATE_TRACKERS}" = "disable" ]]; then
     rm -f /etc/services.d/crond/down
-    bash <(
-        curl ${CURL_OPTIONS} ${PROFILE_URL1}/tracker.sh ||
-            curl ${CURL_OPTIONS} ${PROFILE_URL2}/tracker.sh ||
-            curl ${CURL_OPTIONS} ${PROFILE_URL3}/tracker.sh
-    )
+    PROFILES="tracker.sh"
+    DOWNLOAD_PROFILE
+    bash ${SCRIPT_DIR}/tracker.sh ${ARIA2_CONF}
+else
+    touch /etc/services.d/crond/down
 fi
 
 exit 0
